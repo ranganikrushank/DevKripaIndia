@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Kripa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="/assets/Dev Kripa Logo.png" rel="icon" sizes="16x16">
+    <link href="/assets/Dev Kripa Logo.png" rel="icon" sizes="32x32">
+    <link href="/assets/Dev Kripa Logo.png" rel="icon" sizes="48x48">
+    <link href="/assets/Dev Kripa Logo.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="/assets/Dev Kripa Logo.png" rel="icon" type="image/png" sizes="192x192">
+    <link href="/assets/Dev Kripa Logo.png" rel="icon" type="image/png" sizes="256x256">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter for body, Playfair Display for headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:wght@700;800;900&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-blue': '#073763',
+                        'brand-yellow': '#ffc107',
+                        'light-bg': '#f8f9fa',
+                        'lighter-bg': '#ffffff',
+                        'dark-bg': '#0a192f', // For future dark mode
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'serif': ['Playfair Display', 'serif'],
+                    },
+                    fontSize: {
+                        '8xl': '6rem',
+                        '9xl': '8rem',
+                    },
+                    boxShadow: {
+                        'glow': '0 0 30px rgba(255, 193, 7, 0.2)',
+                        'card-hover': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgba(255,193,7,0.15)',
+                    },
+                    screens: {
+                        '3xl': '1920px',
+                    },
+                    transitionProperty: {
+                        'all': 'all',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .animate-fade-in-down {
+            animation: fadeInDown 1.2s ease-out forwards;
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 1.2s ease-out 0.3s forwards;
+        }
+
+        .animate-zoom-in {
+            animation: zoomIn 1s ease-out 0.5s forwards;
+        }
+
+        .float-element {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Fade-in on scroll */
+        .fade-in,
+        .slide-in-left,
+        .slide-in-right,
+        .zoom-in {
+            opacity: 0;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .fade-in.visible,
+        .slide-in-left.visible,
+        .slide-in-right.visible,
+        .zoom-in.visible {
+            opacity: 1;
+            transform: translateY(0) translateX(0) scale(1);
+        }
+
+        /* Slide In Variants */
+        .slide-in-left {
+            transform: translateX(-50px);
+        }
+
+        .slide-in-right {
+            transform: translateX(50px);
+        }
+
+        /* Glassmorphic Card Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Product Card Enhancements */
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255, 193, 7, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .purity-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #073763;
+            color: #fff;
+            font-size: 0.6rem;
+            padding: 4px 8px;
+            border-radius: 9999px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Floating Particles in Hero */
+        .hero-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 193, 7, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.8;
+            transition: opacity 0.5s;
+        }
+
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+
+        /* FAQ Accordion Animation */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 1.5rem;
+        }
+
+        /* Button Glow on Hover */
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(255, 193, 7, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #073763;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #052b50;
+        }
+
+        /* Responsive Image Optimization */
+        img {
+            image-rendering: crisp-edges;
+        }
+    </style>
+</head>
+
+<body class="bg-white font-sans text-gray-800 overflow-x-hidden">
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-sky-200 fixed top-0 left-0 right-0 z-50 shadow-md transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <img src="/assets/Dev Kripa.png" style="height: 110px;" alt="Dev Kripa Logo"
+                    class=" mr-2 drop-shadow-lg">
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#home"
+                    class="text-gray-600 hover:text-brand-blue transition-all duration-300 font-medium relative group">
+                    Home
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#about"
+                    class="text-gray-600 hover:text-brand-blue transition-all duration-300 font-medium relative group">
+                    About
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#products"
+                    class="text-gray-600 hover:text-brand-blue transition-all duration-300 font-medium relative group">
+                    Products
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#benefits"
+                    class="text-gray-600 hover:text-brand-blue transition-all duration-300 font-medium relative group">
+                    Benefits
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#testimonials"
+                    class="text-gray-600 hover:text-brand-blue transition-all duration-300 font-medium relative group">
+                    Testimonials
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#faq"
+                    class="text-gray-600 hover:text-brand-blue transition-all duration-300 font-medium relative group">
+                    FAQ
+                    <span
+                        class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#contact"
+                    class="bg-brand-yellow text-brand-blue font-bold py-2 px-6 rounded-full hover:bg-yellow-400 transition-all duration-300 shadow-lg hover:shadow-xl btn-glow">
+                    Enquire Now
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button"
+                    class="text-brand-blue focus:outline-none p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white pb-6 pt-4 shadow-xl">
+            <div class="px-6 space-y-4">
+                <a href="#home"
+                    class="block py-3 px-4 text-base text-gray-600 hover:bg-light-bg rounded-lg transition-colors">Home</a>
+                <a href="#about"
+                    class="block py-3 px-4 text-base text-gray-600 hover:bg-light-bg rounded-lg transition-colors">About
+                    Us</a>
+                <a href="#products"
+                    class="block py-3 px-4 text-base text-gray-600 hover:bg-light-bg rounded-lg transition-colors">Products</a>
+                <a href="#benefits"
+                    class="block py-3 px-4 text-base text-gray-600 hover:bg-light-bg rounded-lg transition-colors">Benefits</a>
+                <a href="#testimonials"
+                    class="block py-3 px-4 text-base text-gray-600 hover:bg-light-bg rounded-lg transition-colors">Testimonials</a>
+                <a href="#faq"
+                    class="block py-3 px-4 text-base text-gray-600 hover:bg-light-bg rounded-lg transition-colors">FAQ</a>
+                <a href="#contact"
+                    class="block w-full text-center py-3 px-4 bg-brand-yellow text-brand-blue font-bold rounded-full hover:bg-yellow-400 transition-all duration-300 shadow-lg btn-glow">
+                    Enquire Now
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Scroll Indicator -->
+    <!-- <div class="scroll-indicator hidden md:block">
+        <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+        <span class="text-xs text-gray-500">Scroll</span>
+    </div> -->
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home"
+            class="hero-bg h-screen flex items-center justify-center text-white text-center pt-20 relative overflow-hidden">
+            <!-- Floating Particles -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="hero-particle" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
+                <div class="hero-particle" style="top: 40%; left: 30%; animation-delay: 1s;"></div>
+                <div class="hero-particle" style="top: 60%; left: 70%; animation-delay: 2s;"></div>
+                <div class="hero-particle" style="top: 30%; left: 85%; animation-delay: 3s;"></div>
+                <div class="hero-particle" style="top: 80%; left: 20%; animation-delay: 4s;"></div>
+            </div>
+
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-br from-black/60 via-transparent to-transparent"></div>
+
+            <!-- Content -->
+            <div class="relative z-10 max-w-4xl mx-auto px-6">
+                <h1
+                    class="text-black text-6xl md:text-8xl lg:text-9xl font-serif font-extrabold mb-6 animate-fade-in-down tracking-tight leading-none">
+                    Dev Kripa
+                </h1>
+                <p
+                    class="text-blue-700 text-xl md:text-2xl lg:text-3xl mb-10 max-w-2xl mx-auto animate-fade-in-up font-light leading-relaxed">
+                    Authentic Flavours of India, Delivered with Care.<br>
+                    <span class="font-bold text-brand-yellow">Purity in Every Pinch, Goodness in Every Bite.</span>
+                </p>
+                <a href="#products"
+                    class="inline-block bg-brand-yellow text-brand-blue font-bold py-4 px-10 rounded-full hover:bg-yellow-400 transition-all duration-300 shadow-2xl hover:shadow-3xl btn-glow text-lg transform hover:-translate-y-1">
+                    Explore Our Collection
+                </a>
+            </div>
+
+            <!-- Bottom Wave Divider -->
+            <div class="absolute bottom-0 left-0 w-full h-20 overflow-hidden">
+                <svg class="w-full h-full" viewBox="0 0 1200 120" preserveAspectRatio="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M321.39,56.44c58-10.79,114.2-20.09,172-20.09,112.05,0,203.33,72.66,269.3,113.24,58.21,38.19,115.69,79.56,181.13,102.41,75.84,24.32,155.84,24.18,230.34,0,104.14-30.19,179.78-88.77,231.26-145.72,51.48-56.95,77.73-115.86,77.73-184.41C1482.34,121.54,1456.56,85.29,1418.88,65.44c-47.68-19.84-100.51-30.55-158.51-30.55-58,0-110.83,10.71-158.51,30.55-58.2,19.85-111.1,47.39-158.51,81.24-47.41,33.85-90.57,74.68-129.3,122.69-38.73,48-70.28,101.84-95.8,158.76-25.55,56.92-43.78,118.31-54.71,181.54C127.35,726.74,92.75,779.7,56.44,827.42c-36.31,47.72-75.39,93.18-116.4,136.41C-27.28,1005.71-82.7,1042.7-144.5,1068.58c-61.8,25.88-131.7,41.44-209.24,46.57-77.54,5.13-158.51-1.41-240.85-19.42-82.34-18-158.51-48.26-228.65-89.47-70.14-41.21-126.78-91.91-169.94-151.11-43.16-59.2-73.69-126.45-90.73-201.73C-111.56,581.71-119.82,498.77-119.82,416.84c0-81.93,11.8-158.51,35.4-229.75C-46.78,129.74,37.62,47.87,144.5,0"
+                        fill="rgba(255,255,255,0.05)" />
+                </svg>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-20 bg-light-bg">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center gap-16">
+                    <div class="md:w-1/2 slide-in-left">
+                        <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+                            <img src="/assets/About.png" alt="Happy farmers in a field"
+                                class="w-full h-auto object-cover transition-transform duration-700 hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 text-center md:text-left slide-in-right">
+                        <h2 class="text-4xl md:text-5xl font-serif text-brand-blue mb-6 leading-tight">Rooted in
+                            Tradition, Nurtured by Nature</h2>
+                        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                            At Dev Kripa, we believe that the best flavours come from the purest ingredients. Our
+                            journey began with a simple mission: to bring the authentic, natural goodness of Indian
+                            produce to every home.
+                        </p>
+                        <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                            We work directly with dedicated farmers to source the finest ingredients, ensuring that
+                            every product is a testament to quality, tradition, and the rich bounty of our land. From
+                            golden turmeric fields to lush cashew groves — we honor every harvest.
+                        </p>
+                        <a href="#process"
+                            class="inline-flex items-center text-brand-blue font-semibold hover:text-brand-yellow transition-colors group">
+                            Discover Our Process
+                            <svg class="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Process Section -->
+        <section id="process" class="py-20 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-serif text-brand-blue mb-16 fade-in">From Farm to Your Family</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
+                    <!-- Dotted Line -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-px -mt-px pointer-events-none">
+                        <svg width="100%" height="2">
+                            <line x1="0" y1="1" x2="100%" y2="1" stroke="#e0e0e0" stroke-width="2"
+                                stroke-dasharray="8 8" />
+                        </svg>
+                    </div>
+
+                    <!-- Step 1 -->
+                    <div class="relative flex flex-col items-center fade-in" style="transition-delay: 100ms;">
+                        <div
+                            class="bg-white text-brand-yellow w-20 h-20 rounded-full flex items-center justify-center mb-5 border-4 border-white shadow-lg z-10 transform hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547a2 2 0 01-2.288 0l-2.172-1.086a2 2 0 010-3.788l2.172-1.086a2 2 0 012.288 0l1.806.903a6 6 0 003.86-.517l.318-.158a6 6 0 013.86-.517l2.387-.477a2 2 0 001.022-.547a2 2 0 012.288 0l2.172 1.086a2 2 0 010 3.788l-2.172 1.086a2 2 0 01-2.288 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Careful Sourcing</h3>
+                        <p class="text-gray-600 px-2 text-center">We partner with local farmers who share our passion
+                            for quality.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex flex-col items-center fade-in" style="transition-delay: 300ms;">
+                        <div
+                            class="bg-white text-brand-yellow w-20 h-20 rounded-full flex items-center justify-center mb-5 border-4 border-white shadow-lg z-10 transform hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Natural Processing</h3>
+                        <p class="text-gray-600 px-2 text-center">Products are minimally processed to retain their
+                            natural goodness.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex flex-col items-center fade-in" style="transition-delay: 500ms;">
+                        <div
+                            class="bg-white text-brand-yellow w-20 h-20 rounded-full flex items-center justify-center mb-5 border-4 border-white shadow-lg z-10 transform hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Hygienic Packaging</h3>
+                        <p class="text-gray-600 px-2 text-center">Packed with care to ensure freshness and purity in
+                            every packet.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative flex flex-col items-center fade-in" style="transition-delay: 700ms;">
+                        <div
+                            class="bg-white text-brand-yellow w-20 h-20 rounded-full flex items-center justify-center mb-5 border-4 border-white shadow-lg z-10 transform hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Quality Delivered</h3>
+                        <p class="text-gray-600 px-2 text-center">Delivering a promise of quality right to your
+                            doorstep.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="py-20 bg-light-bg">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-serif text-brand-blue text-center mb-12 fade-in">Our Collection of
+                    Goodness</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Product Card: Turmeric -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden product-card relative fade-in group">
+                        <img src="/assets/turmeric.jpg" alt="Turmeric Powder"
+                            class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="p-6 flex-grow">
+                            <span class="purity-badge">Pure & Organic</span>
+                            <h3 class="text-2xl font-serif text-brand-blue mb-3">Turmeric</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Vibrant, aromatic, and rich in curcumin.
+                                Sourced from the best farms to add colour, flavour, and health to your meals.</p>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <a href="https://wa.me/+919324975988?text=Hello!!%20I%20want%20more%20information%20about%20your%20Products%20Pure%20Turmeric."
+                                target="_blank"
+                                class="text-brand-blue font-bold hover:text-brand-yellow transition-all duration-300 flex items-center">
+                                Enquire Now
+                                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Product Card: Cocoa Powder -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden product-card relative fade-in group"
+                        style="transition-delay: 200ms;">
+                        <img src="/assets/Cocoa-Powder.png" alt="Natural Cocoa Powder"
+                            class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="p-6 flex-grow">
+                            <span class="purity-badge">Cold Pressed</span>
+                            <h3 class="text-2xl font-serif text-brand-blue mb-3">Natural Cocoa Powder</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Rich and unsweetened, perfect for decadent
+                                desserts, healthy smoothies, and warm drinks.</p>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <a href="https://wa.me/+919324975988?text=Hello!!%20I%20want%20more%20information%20about%20your%20Products%20Natural%20Cocoa%20Powder."
+                                target="_blank"
+                                class="text-brand-blue font-bold hover:text-brand-yellow transition-all duration-300 flex items-center">
+                                Enquire Now
+                                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Product Card: Cashews -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden product-card relative fade-in group"
+                        style="transition-delay: 400ms;">
+                        <img src="/assets/cashew-nuts.jpg" alt="Premium Cashews"
+                            class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="p-6 flex-grow">
+                            <span class="purity-badge">No Additives</span>
+                            <h3 class="text-2xl font-serif text-brand-blue mb-3">Cashews</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Creamy, crunchy, and packed with nutrients.
+                                Enjoy our premium whole cashews as a wholesome snack.</p>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <a href="https://wa.me/+919324975988?text=Hello!!%20I%20want%20more%20information%20about%20your%20Products%20Premium%20Cashews."
+                                target="_blank"
+                                class="text-brand-blue font-bold hover:text-brand-yellow transition-all duration-300 flex items-center">
+                                Enquire Now
+                                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Product Card: Honey -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden product-card relative fade-in group"
+                        style="transition-delay: 600ms;">
+                        <img src="/assets/honey.jpg" alt="Pure Natural Honey"
+                            class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="p-6 flex-grow">
+                            <span class="purity-badge">Raw & Unfiltered</span>
+                            <h3 class="text-2xl font-serif text-brand-blue mb-3">Honey</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">Golden, pure, and unprocessed. A sweet gift
+                                from nature, perfect for a healthy start to your day.</p>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <a href="https://wa.me/+919324975988?text=Hello!!%20I%20want%20more%20information%20about%20your%20Product%20Honey."
+                                target="_blank"
+                                class="text-brand-blue font-bold hover:text-brand-yellow transition-all duration-300 flex items-center">
+                                Enquire Now
+                                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Benefits Section -->
+        <section id="benefits" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-serif text-brand-blue text-center mb-12 fade-in">Nature's Pharmacy:
+                    The Goodness Within</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Benefit Card 1 -->
+                    <div class="benefit-card glass-card p-8 rounded-2xl zoom-in" style="transition-delay: 100ms;">
+                        <div
+                            class="bg-brand-yellow text-brand-blue w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-serif text-brand-blue mb-4 text-center">Turmeric</h3>
+                        <ul class="text-gray-600 space-y-2 text-center">
+                            <li>• Potent Anti-inflammatory</li>
+                            <li>• Rich in Antioxidants</li>
+                            <li>• Boosts Immunity</li>
+                        </ul>
+                    </div>
+
+                    <!-- Benefit Card 2 -->
+                    <div class="benefit-card glass-card p-8 rounded-2xl zoom-in" style="transition-delay: 300ms;">
+                        <div
+                            class="bg-brand-yellow text-brand-blue w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-serif text-brand-blue mb-4 text-center">Cocoa</h3>
+                        <ul class="text-gray-600 space-y-2 text-center">
+                            <li>• Improves Heart Health</li>
+                            <li>• Mood Enhancer</li>
+                            <li>• Rich in Flavonoids</li>
+                        </ul>
+                    </div>
+
+                    <!-- Benefit Card 3 -->
+                    <div class="benefit-card glass-card p-8 rounded-2xl zoom-in" style="transition-delay: 500ms;">
+                        <div
+                            class="bg-brand-yellow text-brand-blue w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-serif text-brand-blue mb-4 text-center">Cashews</h3>
+                        <ul class="text-gray-600 space-y-2 text-center">
+                            <li>• Source of Healthy Fats</li>
+                            <li>• Energy Booster</li>
+                            <li>• Good for Bone Health</li>
+                        </ul>
+                    </div>
+
+                    <!-- Benefit Card 4 -->
+                    <div class="benefit-card glass-card p-8 rounded-2xl zoom-in" style="transition-delay: 700ms;">
+                        <div
+                            class="bg-brand-yellow text-brand-blue w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-serif text-brand-blue mb-4 text-center">Honey</h3>
+                        <ul class="text-gray-600 space-y-2 text-center">
+                            <li>• Natural Sweetener</li>
+                            <li>• Soothes Sore Throats</li>
+                            <li>• Antibacterial Properties</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 bg-light-bg">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-5xl font-serif text-brand-blue text-center mb-12 fade-in">What Our Customers
+                    Say</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="testimonial-card glass-card p-8 rounded-2xl shadow-lg fade-in">
+                        <p class="text-gray-700 mb-6 italic text-lg leading-relaxed">"The quality of the turmeric is
+                            exceptional! It has such a vibrant color and aroma. Dev Kripa has become my go-to brand for
+                            all my spices."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/60x60/EFEFEF/333333?text=P"
+                                class="w-14 h-14 rounded-full mr-4 border-2 border-brand-yellow shadow-md">
+                            <div>
+                                <p class="font-bold text-brand-blue">Priya S.</p>
+                                <p class="text-sm text-yellow-500">★★★★★</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card glass-card p-8 rounded-2xl shadow-lg fade-in"
+                        style="transition-delay: 200ms;">
+                        <p class="text-gray-700 mb-6 italic text-lg leading-relaxed">"I absolutely love the cashews.
+                            They are so fresh and crunchy. Perfect for snacking! The delivery was also very prompt.
+                            Highly recommended."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/60x60/EFEFEF/333333?text=R"
+                                class="w-14 h-14 rounded-full mr-4 border-2 border-brand-yellow shadow-md">
+                            <div>
+                                <p class="font-bold text-brand-blue">Rohan M.</p>
+                                <p class="text-sm text-yellow-500">★★★★★</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card glass-card p-8 rounded-2xl shadow-lg fade-in"
+                        style="transition-delay: 400ms;">
+                        <p class="text-gray-700 mb-6 italic text-lg leading-relaxed">"The natural honey is pure bliss.
+                            It's thick, delicious, and you can taste the quality. My family loves it on toast and in our
+                            morning tea."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/60x60/EFEFEF/333333?text=A"
+                                class="w-14 h-14 rounded-full mr-4 border-2 border-brand-yellow shadow-md">
+                            <div>
+                                <p class="font-bold text-brand-blue">Anjali K.</p>
+                                <p class="text-sm text-yellow-500">★★★★★</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-20 bg-white">
+            <div class="container mx-auto px-6 max-w-4xl">
+                <h2 class="text-4xl md:text-5xl font-serif text-brand-blue text-center mb-12 fade-in">Frequently Asked
+                    Questions</h2>
+                <div class="space-y-4">
+                    <div class="faq-item border border-gray-100 rounded-2xl overflow-hidden fade-in"
+                        style="transition-delay: 100ms;">
+                        <button
+                            class="faq-question w-full text-left p-6 flex justify-between items-center bg-light-bg hover:bg-gray-50 focus:outline-none transition-colors">
+                            <span class="text-lg font-semibold text-brand-blue">Are your products 100% organic?</span>
+                            <svg class="w-6 h-6 text-brand-blue transition-transform duration-300" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer p-0 hidden">
+                            <div class="p-6 bg-white">
+                                <p class="text-gray-700">We prioritize natural and sustainable farming practices. While
+                                    many of our products are sourced from farms that use organic methods, we are in the
+                                    process of official certification. We guarantee all our products are free from
+                                    harmful pesticides and chemicals.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item border border-gray-100 rounded-2xl overflow-hidden fade-in"
+                        style="transition-delay: 300ms;">
+                        <button
+                            class="faq-question w-full text-left p-6 flex justify-between items-center bg-light-bg hover:bg-gray-50 focus:outline-none transition-colors">
+                            <span class="text-lg font-semibold text-brand-blue">Where do you source your ingredients
+                                from?</span>
+                            <svg class="w-6 h-6 text-brand-blue transition-transform duration-300" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer p-0 hidden">
+                            <div class="p-6 bg-white">
+                                <p class="text-gray-700">We have partnered with a network of trusted farmers across
+                                    various states in India, known for their specific regional produce. For example, our
+                                    turmeric comes from the fields of Sangli, Maharashtra, while our cashews are from
+                                    the coastal regions of Goa.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item border border-gray-100 rounded-2xl overflow-hidden fade-in"
+                        style="transition-delay: 500ms;">
+                        <button
+                            class="faq-question w-full text-left p-6 flex justify-between items-center bg-light-bg hover:bg-gray-50 focus:outline-none transition-colors">
+                            <span class="text-lg font-semibold text-brand-blue">Do you ship all over India?</span>
+                            <svg class="w-6 h-6 text-brand-blue transition-transform duration-300" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="faq-answer p-0 hidden">
+                            <div class="p-6 bg-white">
+                                <p class="text-gray-700">Yes, we proudly deliver our products to customers all across
+                                    India. We have partnered with reliable courier services to ensure your order reaches
+                                    you safely and on time, whether you are in a metro city or a remote town.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-brand-blue text-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-4xl md:text-5xl font-serif mb-4 fade-in">Get In Touch</h2>
+                    <p class="text-lg text-yellow-200 mb-10 max-w-2xl mx-auto fade-in" style="transition-delay: 200ms;">
+                        We would love to hear from you. For bulk orders, partnerships, or any queries, please reach out.
+                    </p>
+                </div>
+                <div class="max-w-4xl mx-auto bg-white text-gray-800 rounded-3xl shadow-3xl p-8 md:p-12 fade-in"
+                    style="transition-delay: 400ms;">
+                    <form id="contactForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <!-- Full Name -->
+                            <div>
+                                <label for="name" class="block text-sm font-bold mb-2">Full Name *</label>
+                                <input type="text" id="name" name="name" required
+                                    class="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all"
+                                    placeholder="Your Full Name">
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div>
+                                <label for="phone" class="block text-sm font-bold mb-2">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required
+                                    class="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all"
+                                    placeholder="+91 XXXXXXXXXX">
+                            </div>
+
+                            <!-- Email Address -->
+                            <div>
+                                <label for="email" class="block text-sm font-bold mb-2">Email Address *</label>
+                                <input type="email" id="email" name="email" required
+                                    class="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all"
+                                    placeholder="you@example.com">
+                            </div>
+
+                            <!-- Product Dropdown -->
+                            <div>
+                                <label for="product" class="block text-sm font-bold mb-2">Product of Interest *</label>
+                                <select id="product" name="product" required
+                                    class="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all appearance-none bg-white">
+                                    <option value="">-- Select a Product --</option>
+                                    <option value="Turmeric">Turmeric</option>
+                                    <option value="Natural Cocoa Powder">Natural Cocoa Powder</option>
+                                    <option value="Cashews">Cashews</option>
+                                    <option value="Honey">Honey</option>
+                                    <option value="Other">Other</option>
+                                    <!-- Add more products as needed -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="mb-6">
+                            <label for="message" class="block text-sm font-bold mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5"
+                                class="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all"
+                                placeholder="Tell us about your inquiry..."></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit"
+                                class="bg-brand-yellow text-brand-blue font-bold py-4 px-12 rounded-full hover:bg-yellow-400 transition-all duration-300 shadow-2xl hover:shadow-3xl btn-glow transform hover:-translate-y-1">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+                <div class="mb-8 md:mb-0">
+                    <a href="#" class="inline-block mb-4">
+                        <img src="/assets/Dev Kripa.png" alt="Dev Kripa Logo" class="h-32 -mb-8 drop-shadow-lg">
+                    </a>
+                    <p class="text-sm text-gray-400">Bringing purity from our farms to your family's table since 2024.
+                    </p>
+                </div>
+                <div class="mb-8 md:mb-0">
+                    <h4 class="font-bold mb-4 text-lg">Quick Links</h4>
+                    <a href="#home" class="block text-gray-400 hover:text-white text-sm mb-2 transition-colors">Home</a>
+                    <a href="#about"
+                        class="block text-gray-400 hover:text-white text-sm mb-2 transition-colors">About</a>
+                    <a href="#products"
+                        class="block text-gray-400 hover:text-white text-sm mb-2 transition-colors">Products</a>
+                    <a href="#benefits"
+                        class="block text-gray-400 hover:text-white text-sm mb-2 transition-colors">Benefits</a>
+                    <a href="#faq" class="block text-gray-400 hover:text-white text-sm mb-2 transition-colors">FAQ</a>
+                    <a href="#contact"
+                        class="block text-gray-400 hover:text-white text-sm transition-colors">Contact</a>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4 text-lg">Contact Us</h4>
+                    <p class="text-gray-400 text-sm mb-2">Mumbai, Maharashtra, India</p>
+                    <a href="mailto:devkripainternational@gmail.com">
+                        <p class="text-gray-400 text-sm mb-2">Email: devkripainternational@gmail.com</p>
+                    </a>
+                    <a href="tel:+919324975988">
+                        <p class="text-gray-400 text-sm mb-4">Phone: +91 93249 75988</p>
+                    </a>
+                    <div class="flex space-x-4 justify-center md:justify-start">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.644-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.2 6.78-2.618 6.98-6.98.059-1.281.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44 1.441-.645 1.441-1.44-.645-1.44-1.441-1.44z" />
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.494v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2024 Dev Kripa. Designed by <a href="https://atlanciaworldwide.com/" class="text-green-300"
+                        target="_blank">Atlancia Worldwide.</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); });
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .zoom-in');
+        animatedElements.forEach(el => observer.observe(el));
+
+        // Shrink header on scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('py-2', 'shadow-lg');
+                header.classList.remove('py-4');
+            } else {
+                header.classList.add('py-4');
+                header.classList.remove('py-2', 'shadow-lg');
+            }
+        });
+
+        // ... YOUR EXISTING SCRIPT CODE ...
+
+        // FAQ Accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+                const answer = question.nextElementSibling;
+                if (item.classList.contains('active')) {
+                    answer.classList.remove('hidden');
+                } else {
+                    answer.classList.add('hidden');
+                }
+            });
+        });
+
+        // Scroll indicator visibility
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                scrollIndicator.style.opacity = '0';
+            } else {
+                scrollIndicator.style.opacity = '0.8';
+            }
+        });
+
+        // ====== NEW: WhatsApp Form Submission ======
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent normal form submission
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const product = document.getElementById('product').value;
+            const message = document.getElementById('message').value;
+
+            // Validate required fields
+            if (!name || !phone || !email || !product) {
+                alert("Please fill in all required fields (*).");
+                return;
+            }
+
+            // Format the message
+            let whatsappMessage = `*New Inquiry from Dev Kripa Website*\n\n`;
+            whatsappMessage += `*Name:* ${name}\n`;
+            whatsappMessage += `*Phone:* ${phone}\n`;
+            whatsappMessage += `*Email:* ${email}\n`;
+            whatsappMessage += `*Product:* ${product}\n`;
+            if (message.trim()) {
+                whatsappMessage += `*Message:* ${message}\n`;
+            }
+            whatsappMessage += `\n*Sent from:* https://devkripa.in/`;
+
+            // Replace these with your actual country code and phone number!
+            const COUNTRY_CODE = "91"; // Example: India
+            const PHONE_NUMBER = "9324975988"; // Your business WhatsApp number without + or 0
+
+            // Construct the WhatsApp URL
+            // Using wa.me for web compatibility
+            const whatsappUrl = `https://wa.me/${COUNTRY_CODE}${PHONE_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
+
+            // Open WhatsApp in a new tab
+            window.open(whatsappUrl, '_blank');
+
+            // Optional: Show success feedback
+            alert("Your message has been opened in WhatsApp. Please complete sending it there.");
+        });
+
+
+    </script>
+</body>
+
+</html>
